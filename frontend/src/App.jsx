@@ -1,4 +1,4 @@
-import logo from './assets/logo/logo.jpg'
+import { useState } from 'react'
 import heroPhoto from './assets/site/PHOTO-2026-10-09-22-43-31 2.jpg'
 import aboutPhoto from './assets/site/PHOTO-2026-10-09-22-43-32.jpg'
 import projectPhoto from './assets/site/PHOTO-2026-10-09-22-43-31.jpg'
@@ -7,6 +7,8 @@ import workOne from './assets/work_pic/PHOTO-2026-10-09-22-43-32.jpg'
 import workTwo from './assets/work_pic/PHOTO-2026-10-09-22-43-33.jpg'
 import workThree from './assets/work_pic/PHOTO-2026-10-09-22-43-34.jpg'
 import './App.css'
+
+const logo = '/apex-logo.png'
 
 const services = [
   { icon: '◉', title: 'Gas Turbine Installation', copy: 'Installation of industrial gas turbine equipment, including mechanical, electrical and auxiliary systems.' },
@@ -37,6 +39,29 @@ function ArrowLink({ children, href = '#contact', outline = false }) {
   return <a className={`button${outline ? ' button-outline' : ''}`} href={href}>{children}<span aria-hidden="true">→</span></a>
 }
 
+function ImageSlider({ items, label, className = '' }) {
+  const [active, setActive] = useState(0)
+  const move = (step) => setActive((current) => (current + step + items.length) % items.length)
+
+  return (
+    <div className={`image-slider ${className}`} aria-label={label}>
+      <div className="slider-track" style={{ '--slide-index': active }}>
+        {items.map((item) => (
+          <article className="slider-slide" key={item.name || item.title}>
+            <img src={item.photo} alt={item.alt || ''} />
+            <span className="slide-caption"><b>{item.name || item.title}</b>{item.detail && <small>{item.detail}</small>}</span>
+          </article>
+        ))}
+      </div>
+      <div className="slider-controls">
+        <button type="button" onClick={() => move(-1)} aria-label="Previous image">←</button>
+        <div className="slider-dots">{items.map((item, index) => <button type="button" key={item.name || item.title} className={active === index ? 'selected' : ''} onClick={() => setActive(index)} aria-label={`Show image ${index + 1}`} aria-current={active === index ? 'true' : undefined} />)}</div>
+        <button type="button" onClick={() => move(1)} aria-label="Next image">→</button>
+      </div>
+    </div>
+  )
+}
+
 function App() {
   return (
     <>
@@ -47,6 +72,7 @@ function App() {
         </nav>
         <ArrowLink href="#contact">Request a Quote</ArrowLink>
         <a className="phone-link" href="tel:+12565550187">☎ <span>+1 (256) 555-0187</span></a>
+        <details className="mobile-menu"><summary aria-label="Open navigation menu"><span></span><span></span><span></span></summary><nav aria-label="Mobile navigation">{['Home', 'About Us', 'Services', 'Industries', 'Projects', 'Safety & Quality', 'Careers', 'News', 'Contact'].map((item) => <a href={item === 'Home' ? '#home' : `#${item.toLowerCase().replaceAll(' ', '-').replace('&', 'and')}`} key={item}>{item}</a>)}</nav></details>
       </header>
 
       <main>
@@ -73,6 +99,7 @@ function App() {
         <section className="section industries-section" id="industries">
           <div className="section-heading"><h2>Industries We Serve</h2><p>We work with a wide range of industries, delivering reliable turbine solutions for diverse applications.</p></div>
           <div className="industry-grid">{industries.map((industry) => <a href="#contact" className="industry-card" key={industry.name}><img src={industry.photo} alt="" /><span><b aria-hidden="true">{industry.icon}</b>{industry.name}</span></a>)}</div>
+          <ImageSlider className="industry-slider" items={industries.map((industry) => ({ ...industry, title: industry.name }))} label="Industries gallery" />
         </section>
 
         <section className="process-section" id="safety-and-quality">
@@ -90,6 +117,7 @@ function App() {
           <div className="projects-backdrop" style={{ backgroundImage: `linear-gradient(90deg, rgba(2,31,59,.94), rgba(2,31,59,.55)), url("${projectPhoto}")` }} />
           <div className="projects-intro"><p className="eyebrow">Featured Projects</p><h2>Proven Experience. Real Results.</h2><p>Explore some of our recent turbine installation and commissioning projects across multiple industries and locations.</p><ArrowLink href="#projects" outline>View All Projects</ArrowLink></div>
           <div className="project-grid">{projects.map((project) => <article className="project-card" key={project.title}><img src={project.photo} alt="" /><div><h3>{project.title}</h3><p>{project.detail}</p><a href="#contact">View Project <span>→</span></a></div></article>)}</div>
+          <ImageSlider className="project-slider" items={projects.map((project) => ({ photo: project.photo, title: project.title, detail: project.detail, alt: `Turbine project: ${project.title}` }))} label="Featured projects gallery" />
         </section>
 
         <section className="contact-band" id="contact" style={{ '--contact-image': `url("${powerPhoto}")` }}><div><p className="eyebrow">Let’s Build a More Reliable Energy Future</p><p>Contact us today to discuss your project requirements and find out how<br className="desktop-break" /> Apex Turbine Solutions can support your business.</p></div><ArrowLink href="mailto:info@apexturbinesolutions.com" outline>Contact Us</ArrowLink><div className="contact-details"><a href="tel:+12565550187">☎ +1 (256) 555-0187</a><a href="mailto:info@apexturbinesolutions.com">✉ info@apexturbinesolutions.com</a><span>⌖ Huntsville, AL 35801, USA</span></div></section>
