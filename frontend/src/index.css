@@ -2,8 +2,10 @@
 
 :root { font-family: 'DM Sans', Arial, sans-serif; color: #183552; background: #fff; font-synthesis: none; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; }
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body { margin: 0; min-width: 320px; }
+html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+body { margin: 0; min-width: 320px; overflow-x: clip; }
 button, a { font: inherit; }
 a { color: inherit; }
 img { display: block; max-width: 100%; }
+::selection { background: #b9def8; color: #082f56; }
+@media (max-width: 760px) { html { scroll-padding-top: 66px; } }

@@ -1,7 +1,9 @@
-import Home from './pages/Home.jsx'
+import Home from './pages/home/Home.jsx'
+import NotFound from './pages/not-found/NotFound.jsx'
 
 function App() {
-  return <Home />
+  const isHome = window.location.pathname === '/' || window.location.pathname === '/index.html'
+  return isHome ? <Home /> : <NotFound />
 }
 
 export default App
