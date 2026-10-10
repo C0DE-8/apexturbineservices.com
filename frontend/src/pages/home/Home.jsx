@@ -95,7 +95,7 @@ function App() {
           {navigation.map((item) => <a className={item === 'Home' ? 'active' : ''} href={navHref(item)} key={item}>{item}</a>)}
         </nav>
         <ArrowLink href="#contact">Request a Quote</ArrowLink>
-        <a className="phone-link" href="tel:+12565550187"><Phone aria-hidden="true" size={15} strokeWidth={2.2} /><span>+1 (256) 555-0187</span></a>
+        <div className="phone-link"><Phone aria-hidden="true" size={15} strokeWidth={2.2} /><span><a href="tel:+12562887649">+1 (256) 288-7649</a><a href="tel:+13462687410">+1 (346) 268-7410</a></span></div>
         <details className="mobile-menu"><summary aria-label="Open navigation menu"><span></span><span></span><span></span></summary><nav aria-label="Mobile navigation">{navigation.map((item) => <a href={navHref(item)} key={item}>{item}</a>)}</nav></details>
       </header>
 
@@ -107,7 +107,7 @@ function App() {
           url: 'https://www.apexturbineservices.com/',
           logo: 'https://www.apexturbineservices.com/apex-logo.png',
           email: 'info@apexturbinesolutions.com',
-          telephone: '+1-256-555-0187',
+          telephone: ['+1-256-288-7649', '+1-346-268-7410'],
           address: { '@type': 'PostalAddress', addressLocality: 'Huntsville', addressRegion: 'AL', postalCode: '35801', addressCountry: 'US' },
           description: 'Industrial gas turbine installation, generator integration, commissioning, inspection, maintenance coordination and engineering support.',
           hasOfferCatalog: { '@type': 'OfferCatalog', name: 'Turbine and power generation services', itemListElement: services.map((service) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: service.title, description: service.copy } })) },
@@ -176,7 +176,7 @@ function App() {
           <ImageSlider className="project-slider" items={projects.map((project) => ({ photo: project.photo, title: project.title, detail: project.detail, alt: `Turbine project: ${project.title}` }))} label="Featured projects gallery" />
         </section>
 
-        <section className="contact-band" id="contact" style={{ '--contact-image': `url("${powerPhoto}")` }}><div><p className="eyebrow">Let’s Build a More Reliable Energy Future</p><p>Contact us today to discuss your project requirements and find out how<br className="desktop-break" /> Apex Turbine Solutions can support your business.</p></div><ArrowLink href="mailto:info@apexturbinesolutions.com" outline>Contact Us</ArrowLink><div className="contact-details"><a href="tel:+12565550187"><Phone size={15} aria-hidden="true" />+1 (256) 555-0187</a><a href="mailto:info@apexturbinesolutions.com"><Mail size={15} aria-hidden="true" />info@apexturbinesolutions.com</a><span><MapPin size={15} aria-hidden="true" />Huntsville, AL 35801, USA</span></div></section>
+        <section className="contact-band" id="contact" style={{ '--contact-image': `url("${powerPhoto}")` }}><div><p className="eyebrow">Let’s Build a More Reliable Energy Future</p><p>Contact us today to discuss your project requirements and find out how<br className="desktop-break" /> Apex Turbine Solutions can support your business.</p></div><ArrowLink href="mailto:info@apexturbinesolutions.com" outline>Contact Us</ArrowLink><div className="contact-details"><a href="tel:+12562887649"><Phone size={15} aria-hidden="true" />+1 (256) 288-7649</a><a href="tel:+13462687410"><Phone size={15} aria-hidden="true" />+1 (346) 268-7410</a><a href="mailto:info@apexturbinesolutions.com"><Mail size={15} aria-hidden="true" />info@apexturbinesolutions.com</a><span><MapPin size={15} aria-hidden="true" />Huntsville, AL 35801, USA</span></div></section>
       </main>
 
       <footer className="site-footer"><div className="footer-main"><a href="#home" className="brand footer-brand"><img src={logo} alt="Apex Turbine Services" /></a><nav aria-label="Footer navigation">{navigation.map((item) => <a key={item} href={navHref(item)}>{item}</a>)}</nav><div className="social-links"><a href="#contact" aria-label="LinkedIn"><BriefcaseBusiness size={16} aria-hidden="true" /></a><a href="#contact" aria-label="YouTube"><Play size={16} aria-hidden="true" /></a><a href="#contact" aria-label="X"><X size={16} aria-hidden="true" /></a></div></div><div className="footer-bottom"><span>© 2025 Apex Turbine Solutions. All rights reserved.</span><span>Engineering Today. Powering Tomorrow.</span></div></footer>
