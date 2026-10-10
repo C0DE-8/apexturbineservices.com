@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { ArrowLeft, ArrowRight, BadgeCheck, BriefcaseBusiness, Building2, Cable, CircleCheck, ClipboardList, Clock3, Cog, Factory, Fan, FlaskConical, Fuel, Gauge, Handshake, HardHat, Mail, MapPin, MessageSquareText, Phone, Pickaxe, Play, Plus, SearchCheck, ShieldCheck, SlidersHorizontal, Target, X, Zap } from 'lucide-react'
 import heroPhoto from '../../assets/site/PHOTO-2026-10-09-22-43-31 2.jpg'
-import aboutPhoto from '../../assets/site/PHOTO-2026-10-09-22-43-32.jpg'
+import aboutPhoto from '../../assets/work_pic/man.jpg'
 import projectPhoto from '../../assets/site/PHOTO-2026-10-09-22-43-31.jpg'
 import powerPhoto from '../../assets/site/PHOTO-2026-10.jpg'
 import workOne from '../../assets/work_pic/PHOTO-2026-10-09-22-43-32.jpg'
