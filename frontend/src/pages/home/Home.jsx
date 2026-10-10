@@ -172,7 +172,7 @@ function App() {
         <section className="projects-section" id="projects">
           <div className="projects-backdrop" style={{ backgroundImage: `linear-gradient(90deg, rgba(2,31,59,.94), rgba(2,31,59,.55)), url("${projectPhoto}")` }} />
           <div className="projects-intro"><p className="eyebrow">Featured Projects</p><h2>Proven Experience. Real Results.</h2><p>Explore some of our recent turbine installation and commissioning projects across multiple industries and locations.</p><ArrowLink href="#projects" outline>View All Projects</ArrowLink></div>
-          <div className="project-grid">{projects.map((project) => <article className="project-card" key={project.title}><img src={project.photo} alt="" /><div><h3>{project.title}</h3><p>{project.detail}</p><a href="#contact">View Project <ArrowRight size={13} aria-hidden="true" /></a></div></article>)}</div>
+          <div className="project-grid">{projects.map((project, index) => <article className={`project-card${index === 0 ? ' project-card-man' : ''}`} key={project.title}><img src={project.photo} alt="" /><div><h3>{project.title}</h3><p>{project.detail}</p><a href="#contact">View Project <ArrowRight size={13} aria-hidden="true" /></a></div></article>)}</div>
           <ImageSlider className="project-slider" items={projects.map((project) => ({ photo: project.photo, title: project.title, detail: project.detail, alt: `Turbine project: ${project.title}` }))} label="Featured projects gallery" />
         </section>
 
