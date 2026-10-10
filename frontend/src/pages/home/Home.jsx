@@ -5,6 +5,7 @@ import aboutPhoto from '../../assets/site/PHOTO-2026-10-09-22-43-32.jpg'
 import projectPhoto from '../../assets/site/PHOTO-2026-10-09-22-43-31.jpg'
 import powerPhoto from '../../assets/site/PHOTO-2026-10.jpg'
 import workOne from '../../assets/work_pic/man.jpg'
+import workTeam from '../../assets/work_pic/PHOTO-2026-10-09-22.jpg'
 import workTwo from '../../assets/work_pic/PHOTO-2026-10-09-22-43-33.jpg'
 import workThree from '../../assets/work_pic/PHOTO-2026-10-09-22-43-34.jpg'
 import '../../App.css'
@@ -47,6 +48,7 @@ const processSteps = [
 
 const projects = [
   { photo: workOne, title: 'Industrial Gas Turbine Installation', detail: 'Power Generation  |  USA' },
+  { photo: workTeam, title: 'Turbine Installation Team', detail: 'Power Generation  |  USA' },
   { photo: workTwo, title: 'Generator Integration Project', detail: 'Manufacturing  |  USA' },
   { photo: workThree, title: 'Turbine Commissioning', detail: 'Oil & Gas  |  Middle East' },
 ]
