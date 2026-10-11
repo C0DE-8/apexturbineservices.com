@@ -4,7 +4,7 @@ import heroPhoto from '../../assets/site/PHOTO-2026-10-09-22-43-31 2.jpg'
 import aboutPhoto from '../../assets/site/PHOTO-2026-10-09-22-43-32.jpg'
 import projectPhoto from '../../assets/site/PHOTO-2026-10-09-22-43-31.jpg'
 import powerPhoto from '../../assets/site/PHOTO-2026-10.jpg'
-import workOne from '../../assets/work_pic/man.jpg'
+import workOne from '../../assets/work_pic/work.jpg'
 import workTeam from '../../assets/work_pic/PHOTO-2026-10-09-22.jpg'
 import workTwo from '../../assets/work_pic/PHOTO-2026-10-09-22-43-33.jpg'
 import workThree from '../../assets/work_pic/PHOTO-2026-10-09-22-43-34.jpg'
@@ -59,7 +59,7 @@ const faqs = [
   ['What information should I include in a project inquiry?', 'Share your facility location, equipment or turbine model, project stage, target schedule and the support you need. The Apex team can use those details to understand the project and discuss next steps.'],
 ]
 const navigation = ['Home', 'About Us', 'Services', 'Industries', 'Projects', 'Safety & Quality', 'Careers', 'Insights', 'Contact']
-const navHref = (item) => ({ Home: '#home', 'About Us': '#about-us', Services: '#services', Industries: '#industries', Projects: '#projects', 'Safety & Quality': '#safety-and-quality', Careers: 'mailto:info@apexturbinesolutions.com?subject=Careers%20at%20Apex', Insights: '#insights', Contact: '#contact' })[item]
+const navHref = (item) => ({ Home: '#home', 'About Us': '#about-us', Services: '#services', Industries: '#industries', Projects: '#projects', 'Safety & Quality': '#safety-and-quality', Careers: 'mailto:apexturbieservices@gmail.com?subject=Careers%20at%20Apex', Insights: '#insights', Contact: '#contact' })[item]
 
 function ArrowLink({ children, href = '#contact', outline = false }) {
   return <a className={`button${outline ? ' button-outline' : ''}`} href={href}>{children}<ArrowRight size={16} strokeWidth={2} aria-hidden="true" /></a>
@@ -97,7 +97,7 @@ function App() {
           {navigation.map((item) => <a className={item === 'Home' ? 'active' : ''} href={navHref(item)} key={item}>{item}</a>)}
         </nav>
         <ArrowLink href="#contact">Request a Quote</ArrowLink>
-        <div className="phone-link"><Phone aria-hidden="true" size={15} strokeWidth={2.2} /><span><a href="tel:+12562887649">+1 (256) 288-7649</a><a href="tel:+13462687410">+1 (346) 268-7410</a></span></div>
+        <div className="phone-link"><Phone aria-hidden="true" size={15} strokeWidth={2.2} /><span><a href="tel:+12562887649">+1 (256) 288-7649</a></span></div>
         <details className="mobile-menu"><summary aria-label="Open navigation menu"><span></span><span></span><span></span></summary><nav aria-label="Mobile navigation">{navigation.map((item) => <a href={navHref(item)} key={item}>{item}</a>)}</nav></details>
       </header>
 
@@ -108,8 +108,8 @@ function App() {
           name: 'Apex Turbine Services',
           url: 'https://www.apexturbineservices.com/',
           logo: 'https://www.apexturbineservices.com/apex-logo.png',
-          email: 'info@apexturbinesolutions.com',
-          telephone: ['+1-256-288-7649', '+1-346-268-7410'],
+          email: 'apexturbieservices@gmail.com',
+          telephone: ['+1-256-288-7649'],
           address: { '@type': 'PostalAddress', addressLocality: 'Huntsville', addressRegion: 'AL', postalCode: '35801', addressCountry: 'US' },
           description: 'Industrial gas turbine installation, generator integration, commissioning, inspection, maintenance coordination and engineering support.',
           hasOfferCatalog: { '@type': 'OfferCatalog', name: 'Turbine and power generation services', itemListElement: services.map((service) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: service.title, description: service.copy } })) },
@@ -167,7 +167,7 @@ function App() {
         </section>
 
         <section className="faq-section" id="faq">
-          <div className="faq-intro"><p className="eyebrow blue">FAQ</p><h2>Questions About Working With Apex</h2><p>Need help with a specific turbine or facility? Send our team a project inquiry.</p><ArrowLink href="mailto:info@apexturbinesolutions.com">Talk to Our Team</ArrowLink></div>
+          <div className="faq-intro"><p className="eyebrow blue">FAQ</p><h2>Questions About Working With Apex</h2><p>Need help with a specific turbine or facility? Send our team a project inquiry.</p><ArrowLink href="mailto:apexturbieservices@gmail.com">Talk to Our Team</ArrowLink></div>
           <div className="faq-list">{faqs.map(([question, answer]) => <details key={question}><summary>{question}<Plus size={18} aria-hidden="true" /></summary><p>{answer}</p></details>)}</div>
         </section>
 
@@ -178,7 +178,7 @@ function App() {
           <ImageSlider className="project-slider" items={projects.map((project) => ({ photo: project.photo, title: project.title, detail: project.detail, alt: `Turbine project: ${project.title}` }))} label="Featured projects gallery" />
         </section>
 
-        <section className="contact-band" id="contact" style={{ '--contact-image': `url("${powerPhoto}")` }}><div><p className="eyebrow">Let’s Build a More Reliable Energy Future</p><p>Contact us today to discuss your project requirements and find out how<br className="desktop-break" /> Apex Turbine Solutions can support your business.</p></div><ArrowLink href="mailto:info@apexturbinesolutions.com" outline>Contact Us</ArrowLink><div className="contact-details"><a href="tel:+12562887649"><Phone size={15} aria-hidden="true" />+1 (256) 288-7649</a><a href="tel:+13462687410"><Phone size={15} aria-hidden="true" />+1 (346) 268-7410</a><a href="mailto:info@apexturbinesolutions.com"><Mail size={15} aria-hidden="true" />info@apexturbinesolutions.com</a><span><MapPin size={15} aria-hidden="true" />Huntsville, AL 35801, USA</span></div></section>
+        <section className="contact-band" id="contact" style={{ '--contact-image': `url("${powerPhoto}")` }}><div><p className="eyebrow">Let’s Build a More Reliable Energy Future</p><p>Contact us today to discuss your project requirements and find out how<br className="desktop-break" /> Apex Turbine Solutions can support your business.</p></div><ArrowLink href="mailto:apexturbieservices@gmail.com" outline>Contact Us</ArrowLink><div className="contact-details"><a href="tel:+12562887649"><Phone size={15} aria-hidden="true" />+1 (256) 288-7649</a><a href="mailto:apexturbieservices@gmail.com"><Mail size={15} aria-hidden="true" />apexturbieservices@gmail.com</a><span><MapPin size={15} aria-hidden="true" />Huntsville, AL 35801, USA</span></div></section>
       </main>
 
       <footer className="site-footer"><div className="footer-main"><a href="#home" className="brand footer-brand"><img src={logo} alt="Apex Turbine Services" /></a><nav aria-label="Footer navigation">{navigation.map((item) => <a key={item} href={navHref(item)}>{item}</a>)}</nav><div className="social-links"><a href="#contact" aria-label="LinkedIn"><BriefcaseBusiness size={16} aria-hidden="true" /></a><a href="#contact" aria-label="YouTube"><Play size={16} aria-hidden="true" /></a><a href="#contact" aria-label="X"><X size={16} aria-hidden="true" /></a></div></div><div className="footer-bottom"><span>© 2025 Apex Turbine Solutions. All rights reserved.</span><span>Engineering Today. Powering Tomorrow.</span></div></footer>
