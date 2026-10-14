@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { getSite } from '../../api/site.js'
 import { ArrowLeft, ArrowRight, BadgeCheck, BriefcaseBusiness, Building2, Cable, CircleCheck, ClipboardList, Clock3, Cog, Factory, Fan, FlaskConical, Fuel, Gauge, Handshake, HardHat, Mail, MapPin, MessageSquareText, Phone, Pickaxe, Play, Plus, SearchCheck, ShieldCheck, SlidersHorizontal, Target, X, Zap } from 'lucide-react'
 import heroPhoto from '../../assets/site/PHOTO-2026-10-09-22-43-31 2.jpg'
 import aboutPhoto from '../../assets/site/PHOTO-2026-10-09-22-43-32.jpg'
@@ -46,11 +47,11 @@ const processSteps = [
   ['05', 'Handover & Support', 'Provide documentation, training and ongoing technical support.', BadgeCheck],
 ]
 
-const projects = [
-  { photo: workOne, title: 'Industrial Gas Turbine Installation', detail: 'Power Generation  |  USA' },
-  { photo: workTeam, title: 'Turbine Installation Team', detail: 'Power Generation  |  USA' },
-  { photo: workTwo, title: 'Generator Integration Project', detail: 'Manufacturing  |  USA' },
-  { photo: workThree, title: 'Turbine Commissioning', detail: 'Oil & Gas  |  Middle East' },
+const defaultProjects = [
+  { photo: workOne, title: 'Industrial Gas Turbine Installation', detail: 'Power Generation  |  USA', href: '#contact' },
+  { photo: workTeam, title: 'Turbine Installation Team', detail: 'Power Generation  |  USA', href: '#contact' },
+  { photo: workTwo, title: 'Generator Integration Project', detail: 'Manufacturing  |  USA', href: '#contact' },
+  { photo: workThree, title: 'Turbine Commissioning', detail: 'Oil & Gas  |  Middle East', href: '#contact' },
 ]
 
 const faqs = [
@@ -60,6 +61,16 @@ const faqs = [
 ]
 const navigation = ['Home', 'About Us', 'Services', 'Industries', 'Projects', 'Safety & Quality', 'Careers', 'Insights', 'Contact']
 const navHref = (item) => ({ Home: '#home', 'About Us': '#about-us', Services: '#services', Industries: '#industries', Projects: '#projects', 'Safety & Quality': '#safety-and-quality', Careers: 'mailto:apexturbineservices@gmail.com?subject=Careers%20at%20Apex', Insights: '#insights', Contact: '#contact' })[item]
+const initialContent = {
+  siteName: 'Apex Turbine Services', heroEyebrow: 'Industrial Engineering • Power Generation • Global Reach',
+  heroTitle: 'Powering Industry Through Precision Engineering', heroSubtitle: 'Gas Turbine Installation. Power Generation Solutions. Industrial Excellence.',
+  heroDescription: 'We provide gas turbine installation, system integration, commissioning, and technical support for power generation facilities and industrial operations.',
+  aboutTitle: 'Your Partner in Turbine Installation and Power Generation',
+  aboutCopy: 'Apex Turbine Services is an industrial engineering company specializing in gas turbine installation, generator integration, commissioning and technical support for power plants and industrial facilities. We help our clients achieve reliable, efficient and safe power generation through expert engineering, skilled teams and a commitment to excellence.',
+  contactPhone: '+1 (256) 288-7649', contactEmail: 'apexturbineservices@gmail.com', contactAddress: 'Huntsville, AL 35801, USA', heroImage: heroPhoto, aboutImage: aboutPhoto, projectImage: projectPhoto, contactImage: powerPhoto,
+  services: services.map(({ title, copy }) => ({ title, copy })),
+  projects: defaultProjects,
+}
 
 function ArrowLink({ children, href = '#contact', outline = false }) {
   return <a className={`button${outline ? ' button-outline' : ''}`} href={href}>{children}<ArrowRight size={16} strokeWidth={2} aria-hidden="true" /></a>
@@ -89,6 +100,12 @@ function ImageSlider({ items, label, className = '' }) {
 }
 
 function App() {
+  const [content, setContent] = useState(initialContent)
+  useEffect(() => { getSite().then((saved) => { if (saved) setContent((current) => ({ ...current, ...saved })) }).catch(() => {}) }, [])
+  const visibleServices = content.services?.map((service, index) => ({ ...services[index % services.length], ...service })) || services
+  const visibleProjects = content.projects?.length === 4 ? content.projects : defaultProjects
+  const phoneDigits = content.contactPhone.replace(/[^\d+]/g, '')
+  const emailLink = `mailto:${content.contactEmail}`
   return (
     <>
       <header className="site-header">
@@ -119,19 +136,19 @@ function App() {
           '@type': 'FAQPage',
           mainEntity: faqs.map(([question, answer]) => ({ '@type': 'Question', name: question, acceptedAnswer: { '@type': 'Answer', text: answer } })),
         })}</script>
-        <section className="hero-section" id="home" style={{ '--hero-image': `url("${heroPhoto}")` }}>
+        <section className="hero-section" id="home" style={{ '--hero-image': `url("${content.heroImage}")` }}>
           <div className="hero-copy">
-            <p className="eyebrow">Industrial Engineering <i /> Power Generation <i /> Global Reach</p>
-            <h1>Powering Industry<br />Through Precision<br />Engineering</h1>
-            <p className="hero-subtitle">Gas Turbine Installation. Power Generation Solutions. Industrial Excellence.</p>
-            <p className="hero-description">We provide gas turbine installation, system integration, commissioning, and technical support for power generation facilities and industrial operations.</p>
+            <p className="eyebrow">{content.heroEyebrow}</p>
+            <h1>{content.heroTitle}</h1>
+            <p className="hero-subtitle">{content.heroSubtitle}</p>
+            <p className="hero-description">{content.heroDescription}</p>
             <div className="hero-actions"><ArrowLink href="#services">Explore Our Services</ArrowLink><ArrowLink href="#contact" outline>Request a Project Quote</ArrowLink></div>
           </div>
         </section>
 
         <section className="section services-section" id="services">
           <div className="section-heading"><h2>Our Core Services</h2><p>Complete turbine solutions from installation to ongoing support.</p></div>
-          <div className="service-grid">{services.map((service) => { const Icon = service.icon; return <article className="service-card" key={service.title}><div className="service-icon" aria-hidden="true"><Icon size={23} strokeWidth={1.8} /></div><h3>{service.title}</h3><p>{service.copy}</p><a href="#contact">Learn More <ArrowRight size={13} aria-hidden="true" /></a></article> })}</div>
+          <div className="service-grid">{visibleServices.map((service) => { const Icon = service.icon; return <article className="service-card" key={service.title}><div className="service-icon" aria-hidden="true"><Icon size={23} strokeWidth={1.8} /></div><h3>{service.title}</h3><p>{service.copy}</p><a href="#contact">Learn More <ArrowRight size={13} aria-hidden="true" /></a></article> })}</div>
         </section>
 
         <section className="proof-band" aria-label="Apex project support">
@@ -142,8 +159,8 @@ function App() {
         </section>
 
         <section className="about-section" id="about-us">
-          <img className="about-image" src={aboutPhoto} alt="Technicians inspecting a gas turbine installation" />
-          <div className="about-copy"><p className="eyebrow blue">About Us</p><h2>Your Partner in Turbine<br className="desktop-break" /> Installation and Power Generation</h2><p>Apex Turbine Services is an industrial engineering company specializing in gas turbine installation, generator integration, commissioning and technical support for power plants and industrial facilities. We help our clients achieve reliable, efficient and safe power generation through expert engineering, skilled teams and a commitment to excellence.</p><div className="trust-points">{trustPoints.map(({ icon: Icon, label }) => <span key={label}><Icon size={17} strokeWidth={1.9} aria-hidden="true" /><b>{label}</b></span>)}</div><ArrowLink href="#about-us">Learn More About Us</ArrowLink></div>
+          <img className="about-image" src={content.aboutImage} alt="Technicians inspecting a gas turbine installation" />
+          <div className="about-copy"><p className="eyebrow blue">About Us</p><h2>{content.aboutTitle}</h2><p>{content.aboutCopy}</p><div className="trust-points">{trustPoints.map(({ icon: Icon, label }) => <span key={label}><Icon size={17} strokeWidth={1.9} aria-hidden="true" /><b>{label}</b></span>)}</div><ArrowLink href="#about-us">Learn More About Us</ArrowLink></div>
         </section>
 
         <section className="section industries-section" id="industries">
@@ -172,13 +189,13 @@ function App() {
         </section>
 
         <section className="projects-section" id="projects">
-          <div className="projects-backdrop" style={{ backgroundImage: `linear-gradient(90deg, rgba(2,31,59,.94), rgba(2,31,59,.55)), url("${projectPhoto}")` }} />
+          <div className="projects-backdrop" style={{ backgroundImage: `linear-gradient(90deg, rgba(2,31,59,.94), rgba(2,31,59,.55)), url("${content.projectImage}")` }} />
           <div className="projects-intro"><p className="eyebrow">Featured Projects</p><h2>Proven Experience. Real Results.</h2><p>Explore some of our recent turbine installation and commissioning projects across multiple industries and locations.</p><ArrowLink href="#projects" outline>View All Projects</ArrowLink></div>
-          <div className="project-grid">{projects.map((project, index) => <article className={`project-card${index === 0 ? ' project-card-man' : ''}`} key={project.title}><img src={project.photo} alt="" /><div><h3>{project.title}</h3><p>{project.detail}</p><a href="#contact">View Project <ArrowRight size={13} aria-hidden="true" /></a></div></article>)}</div>
-          <ImageSlider className="project-slider" items={projects.map((project) => ({ photo: project.photo, title: project.title, detail: project.detail, alt: `Turbine project: ${project.title}` }))} label="Featured projects gallery" />
+          <div className="project-grid">{visibleProjects.map((project, index) => <article className={`project-card${index === 0 ? ' project-card-man' : ''}`} key={project.title}><img src={project.photo} alt="" /><div><h3>{project.title}</h3><p>{project.detail}</p><a href={project.href || '#contact'}>View Project <ArrowRight size={13} aria-hidden="true" /></a></div></article>)}</div>
+          <ImageSlider className="project-slider" items={visibleProjects.map((project) => ({ photo: project.photo, title: project.title, detail: project.detail, alt: `Turbine project: ${project.title}` }))} label="Featured projects gallery" />
         </section>
 
-        <section className="contact-band" id="contact" style={{ '--contact-image': `url("${powerPhoto}")` }}><div><p className="eyebrow">Let’s Build a More Reliable Energy Future</p><p>Contact us today to discuss your project requirements and find out how<br className="desktop-break" /> Apex Turbine Solutions can support your business.</p></div><ArrowLink href="mailto:apexturbineservices@gmail.com" outline>Contact Us</ArrowLink><div className="contact-details"><a href="tel:+12562887649"><Phone size={15} aria-hidden="true" />+1 (256) 288-7649</a><a href="mailto:apexturbineservices@gmail.com"><Mail size={15} aria-hidden="true" />apexturbineservices@gmail.com</a><span><MapPin size={15} aria-hidden="true" />Huntsville, AL 35801, USA</span></div></section>
+        <section className="contact-band" id="contact" style={{ '--contact-image': `url("${content.contactImage}")` }}><div><p className="eyebrow">Let’s Build a More Reliable Energy Future</p><p>Contact us today to discuss your project requirements and find out how<br className="desktop-break" /> Apex Turbine Solutions can support your business.</p></div><ArrowLink href={emailLink} outline>Contact Us</ArrowLink><div className="contact-details"><a href={`tel:${phoneDigits}`}><Phone size={15} aria-hidden="true" />{content.contactPhone}</a><a href={emailLink}><Mail size={15} aria-hidden="true" />{content.contactEmail}</a><span><MapPin size={15} aria-hidden="true" />{content.contactAddress}</span></div></section>
       </main>
 
       <footer className="site-footer"><div className="footer-main"><a href="#home" className="brand footer-brand"><img src={logo} alt="Apex Turbine Services" /></a><nav aria-label="Footer navigation">{navigation.map((item) => <a key={item} href={navHref(item)}>{item}</a>)}</nav><div className="social-links"><a href="#contact" aria-label="LinkedIn"><BriefcaseBusiness size={16} aria-hidden="true" /></a><a href="#contact" aria-label="YouTube"><Play size={16} aria-hidden="true" /></a><a href="#contact" aria-label="X"><X size={16} aria-hidden="true" /></a></div></div><div className="footer-bottom"><span>© 2025 Apex Turbine Solutions. All rights reserved.</span><span>Engineering Today. Powering Tomorrow.</span></div></footer>

@@ -1,0 +1,1 @@
+ALTER TABLE projects ADD COLUMN href VARCHAR(1000) NOT NULL DEFAULT '#contact';
