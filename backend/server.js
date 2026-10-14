@@ -15,6 +15,7 @@ const SESSION_MS = 12 * 60 * 60 * 1000
 const sessions = new Map()
 const databaseName = process.env.DB_NAME || 'apex_turbine_cms'
 const publicApiUrl = (process.env.PUBLIC_API_URL || `http://localhost:${process.env.PORT || 3002}`).replace(/\/$/, '')
+const allowedOrigins = new Set((process.env.FRONTEND_ORIGINS || process.env.FRONTEND_ORIGIN || 'http://localhost:5173,https://www.apexturbineservices.com,https://apexturbineservices.com').split(',').map((origin) => origin.trim()).filter(Boolean))
 const pool = mysql.createPool({ host: process.env.DB_HOST || '127.0.0.1', port: Number(process.env.DB_PORT || 3306), user: process.env.DB_USER || 'root', password: process.env.DB_PASSWORD || '', database: databaseName, waitForConnections: true, connectionLimit: 10, charset: 'utf8mb4' })
 const uploadDirectory = path.join(__dirname, 'uploads')
 fs.mkdirSync(uploadDirectory, { recursive: true })
@@ -91,7 +92,7 @@ async function initializeDatabase() {
 }
 
 function send(res, status, body, extra = {}) {
-  res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store', 'Access-Control-Allow-Origin': process.env.FRONTEND_ORIGIN || 'http://localhost:5173', 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Headers': 'Content-Type', 'Access-Control-Allow-Methods': 'GET,POST,PUT,OPTIONS', 'Vary': 'Origin', ...extra })
+  res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store', ...res.corsHeaders, ...extra })
   res.end(JSON.stringify(body))
 }
 function readBody(req) {
@@ -109,7 +110,9 @@ function currentSession(req) {
   return { token, session }
 }
 const server = http.createServer(async (req, res) => {
-  if (req.method === 'OPTIONS') { res.writeHead(204, { 'Access-Control-Allow-Origin': process.env.FRONTEND_ORIGIN || 'http://localhost:5173', 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Headers': 'Content-Type', 'Access-Control-Allow-Methods': 'GET,POST,PUT,OPTIONS', 'Vary': 'Origin' }); return res.end() }
+  const requestOrigin = req.headers.origin
+  res.corsHeaders = requestOrigin && allowedOrigins.has(requestOrigin) ? { 'Access-Control-Allow-Origin': requestOrigin, 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Headers': 'Content-Type', 'Access-Control-Allow-Methods': 'GET,POST,PUT,OPTIONS', 'Vary': 'Origin' } : {}
+  if (req.method === 'OPTIONS') { res.writeHead(204, res.corsHeaders); return res.end() }
   const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`)
   if (req.method === 'GET' && url.pathname.startsWith('/uploads/')) {
     const filename = path.basename(decodeURIComponent(url.pathname.slice('/uploads/'.length)))
