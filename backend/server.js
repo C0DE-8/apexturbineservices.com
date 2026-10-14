@@ -106,14 +106,15 @@ function readBody(req) {
   })
 }
 function currentSession(req) {
-  const token = (req.headers.cookie || '').split(';').map((part) => part.trim()).find((part) => part.startsWith('apex_admin='))?.slice('apex_admin='.length)
+  const bearer = req.headers.authorization?.match(/^Bearer\s+(.+)$/i)?.[1]
+  const token = bearer || (req.headers.cookie || '').split(';').map((part) => part.trim()).find((part) => part.startsWith('apex_admin='))?.slice('apex_admin='.length)
   const session = token && sessions.get(token)
   if (!session || session.expires < Date.now()) { if (token) sessions.delete(token); return null }
   return { token, session }
 }
 const server = http.createServer(async (req, res) => {
   const requestOrigin = req.headers.origin
-  res.corsHeaders = requestOrigin && allowedOrigins.has(requestOrigin) ? { 'Access-Control-Allow-Origin': requestOrigin, 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Headers': 'Content-Type', 'Access-Control-Allow-Methods': 'GET,POST,PUT,OPTIONS', 'Vary': 'Origin' } : {}
+  res.corsHeaders = requestOrigin && allowedOrigins.has(requestOrigin) ? { 'Access-Control-Allow-Origin': requestOrigin, 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Headers': 'Content-Type, Authorization', 'Access-Control-Allow-Methods': 'GET,POST,PUT,OPTIONS', 'Vary': 'Origin' } : {}
   if (req.method === 'OPTIONS') { res.writeHead(204, res.corsHeaders); return res.end() }
   const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`)
   if (req.method === 'GET' && url.pathname.startsWith('/uploads/')) {
@@ -144,7 +145,7 @@ const server = http.createServer(async (req, res) => {
       if (String(email || '').toLowerCase() !== admin.email.toLowerCase() || candidate.length !== expected.length || !crypto.timingSafeEqual(candidate, expected)) return send(res, 401, { error: 'Email or password is incorrect.' })
       const token = crypto.randomBytes(32).toString('hex')
       sessions.set(token, { expires: Date.now() + SESSION_MS })
-      return send(res, 200, { admin: { email: admin.email } }, { 'Set-Cookie': `apex_admin=${token}; HttpOnly; SameSite=Lax; Path=/; Max-Age=${SESSION_MS / 1000}${process.env.NODE_ENV === 'production' ? '; Secure' : ''}` })
+      return send(res, 200, { admin: { email: admin.email }, token }, { 'Set-Cookie': `apex_admin=${token}; HttpOnly; SameSite=None; Path=/; Max-Age=${SESSION_MS / 1000}; Secure` })
     }
     if (req.method === 'POST' && url.pathname === '/api/admin/logout') {
       const active = currentSession(req); if (active) sessions.delete(active.token)
@@ -161,7 +162,7 @@ const server = http.createServer(async (req, res) => {
       }
       if (Array.isArray(input.services)) next.services = input.services.slice(0, 12).map((service) => ({ title: String(service.title || '').slice(0, 120), copy: String(service.copy || '').slice(0, 500) }))
       if (Array.isArray(input.projects)) next.projects = input.projects.slice(0, 4).map((project) => ({ photo: String(project.photo || '').replace(publicApiUrl, '').slice(0, 1000), title: String(project.title || '').slice(0, 120), detail: String(project.detail || '').slice(0, 250), href: String(project.href || '#contact').slice(0, 1000) }))
-      const client = await pool.connect()
+      const client = await pool.getConnection()
       try {
         await client.beginTransaction()
         const site = { ...next }; delete site.services

@@ -5,8 +5,15 @@ async function call(config) {
 }
 
 export const getAdminSession = () => call({ url: '/admin/session' })
-export const loginAdmin = (credentials) => call({ url: '/admin/login', method: 'POST', data: credentials })
-export const logoutAdmin = () => call({ url: '/admin/logout', method: 'POST' })
+export async function loginAdmin(credentials) {
+  const result = await call({ url: '/admin/login', method: 'POST', data: credentials })
+  if (result.token) window.sessionStorage.setItem('apex_admin_token', result.token)
+  return result
+}
+export async function logoutAdmin() {
+  try { return await call({ url: '/admin/logout', method: 'POST' }) }
+  finally { window.sessionStorage.removeItem('apex_admin_token') }
+}
 export const saveSite = (site) => call({ url: '/admin/site', method: 'PUT', data: site })
 export const saveAdminProfile = (profile) => call({ url: '/admin/profile', method: 'PUT', data: profile })
 export async function uploadImage(file) {
