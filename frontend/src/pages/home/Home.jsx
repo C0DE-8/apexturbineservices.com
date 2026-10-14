@@ -63,7 +63,7 @@ const navigation = ['Home', 'About Us', 'Services', 'Industries', 'Projects', 'S
 const navHref = (item) => ({ Home: '#home', 'About Us': '#about-us', Services: '#services', Industries: '#industries', Projects: '#projects', 'Safety & Quality': '#safety-and-quality', Careers: 'mailto:apexturbineservices@gmail.com?subject=Careers%20at%20Apex', Insights: '#insights', Contact: '#contact' })[item]
 const initialContent = {
   siteName: 'Apex Turbine Services', heroEyebrow: 'Industrial Engineering • Power Generation • Global Reach',
-  heroTitle: 'Powering Industry Through Precision Engineering', heroSubtitle: 'Gas Turbine Installation. Power Generation Solutions. Industrial Excellence.',
+  heroTitle: 'Powering Industry xxxxxxxx Through Precision Engineering', heroSubtitle: 'Gas Turbine Installation. Power Generation Solutions. Industrial Excellence.',
   heroDescription: 'We provide gas turbine installation, system integration, commissioning, and technical support for power generation facilities and industrial operations.',
   aboutTitle: 'Your Partner in Turbine Installation and Power Generation',
   aboutCopy: 'Apex Turbine Services is an industrial engineering company specializing in gas turbine installation, generator integration, commissioning and technical support for power plants and industrial facilities. We help our clients achieve reliable, efficient and safe power generation through expert engineering, skilled teams and a commitment to excellence.',
