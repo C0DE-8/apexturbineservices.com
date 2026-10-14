@@ -51,7 +51,9 @@ async function getSite(client = pool) {
   if (!result.length) return defaults
   const [services] = await client.execute('SELECT title, copy FROM services ORDER BY position ASC')
   const [projects] = await client.execute('SELECT photo, title, detail, href FROM projects ORDER BY position ASC')
-  const site = { ...defaults, ...JSON.parse(result[0].content), services: services.length ? services : defaults.services, projects: projects.length ? projects : defaults.projects }
+  const storedContent = result[0].content
+  const decodedContent = typeof storedContent === 'string' ? JSON.parse(storedContent) : storedContent
+  const site = { ...defaults, ...(decodedContent || {}), services: services.length ? services : defaults.services, projects: projects.length ? projects : defaults.projects }
   for (const field of ['heroImage', 'aboutImage', 'projectImage', 'contactImage']) if (site[field]?.startsWith('/uploads/')) site[field] = `${publicApiUrl}${site[field]}`
   site.projects = site.projects.map((project) => ({ ...project, photo: project.photo?.startsWith('/uploads/') ? `${publicApiUrl}${project.photo}` : project.photo }))
   return site
@@ -76,7 +78,7 @@ async function initializeDatabase() {
       if (migration === '002_projects_and_original_media') {
         const [content] = await connection.execute('SELECT content FROM site_settings WHERE id = 1')
         if (content[0]) {
-          const site = JSON.parse(content[0].content)
+          const site = typeof content[0].content === 'string' ? JSON.parse(content[0].content) : content[0].content
           for (const [field, value] of Object.entries({ heroImage: defaults.heroImage, aboutImage: defaults.aboutImage, projectImage: defaults.projectImage, contactImage: defaults.contactImage })) {
             if (site[field] === '/apex-logo.png') site[field] = value
           }

@@ -14,3 +14,5 @@ The backend uses the MySQL/MariaDB server included with XAMPP. Start **MySQL** f
 After switching the API from PostgreSQL to XAMPP MySQL, stop any previously running Node API process and restart it so port `3001` serves the MySQL-backed version.
 
 The dashboard currently manages homepage hero/about copy, contact details, six service cards, four featured project cards (including each View Project link), and image uploads. Multer accepts JPG, PNG, WebP, and GIF uploads up to 8 MB and saves them in `backend/uploads`. The original bundled site, contact, and four project photos have been restored there and are served by the backend. Configure `PUBLIC_API_URL` for the public backend origin outside local development.
+
+Production API calls use a same-origin Vercel rewrite from `/api/*` to the API host so admin cookies stay first-party. Local development uses `VITE_API_URL` from `frontend/.env`. Redeploy the frontend for this proxy configuration to take effect.
